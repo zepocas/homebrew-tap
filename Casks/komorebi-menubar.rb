@@ -1,8 +1,8 @@
-# Homebrew cask template. scripts/bump-cask.sh fills in 0.2.0 and 4af3d54522fa6d14f517d0a13b557f38efa9573c2b30524258b1ae1370db3a5c and writes it
+# Homebrew cask template. scripts/bump-cask.sh fills in 0.2.1 and fe691c756d8a1eed4cd3deafb3a4237af6fb6846b617b54a0bbc66c030dd2eab and writes it
 # to zepocas/homebrew-tap as Casks/komorebi-menubar.rb.
 cask "komorebi-menubar" do
-  version "0.2.0"
-  sha256 "4af3d54522fa6d14f517d0a13b557f38efa9573c2b30524258b1ae1370db3a5c"
+  version "0.2.1"
+  sha256 "fe691c756d8a1eed4cd3deafb3a4237af6fb6846b617b54a0bbc66c030dd2eab"
 
   url "https://github.com/zepocas/komorebi-menubar/releases/download/v#{version}/KomorebiMenubar-#{version}.zip"
   name "Komorebi Menubar"
@@ -19,23 +19,30 @@ cask "komorebi-menubar" do
 
   app "KomorebiMenubar.app"
 
-  # The app is ad-hoc signed, not notarized: drop the download quarantine so Gatekeeper opens it.
   postflight_steps do
+    # The app is ad-hoc signed, not notarized: drop the download quarantine so Gatekeeper opens it.
     run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{appdir}}/KomorebiMenubar.app"], must_succeed: false
+    # After an upgrade, relaunch the login agent (if installed) so the new version is running.
+    run "/bin/sh",
+        args:         ["-c", "launchctl kickstart gui/$(id -u)/io.github.zepocas.komorebi-menubar 2>/dev/null"],
+        must_succeed: false
   end
 
-  uninstall launchctl: "io.github.zepocas.komorebi-menubar",
-            quit:      "io.github.zepocas.komorebi-menubar"
+  # Upgrades run this too, so it must not remove the login agent; `zap` does that.
+  uninstall quit: "io.github.zepocas.komorebi-menubar"
 
-  zap trash: [
-    "~/Library/Application Support/komorebi/komorebi-menubar.sock",
-    "~/Library/Logs/komorebi-menubar.log",
-  ]
+  zap launchctl: "io.github.zepocas.komorebi-menubar",
+      trash:     [
+        "~/Library/Application Support/komorebi/komorebi-menubar.sock",
+        "~/Library/Logs/komorebi-menubar.log",
+      ]
 
   caveats <<~EOS
     To start komorebi, skhd and Komorebi Menubar at login (needed for Restart in the menu),
     install the LaunchAgents from a clone of the repo:
       git clone https://github.com/zepocas/komorebi-menubar
       komorebi-menubar/scripts/install-agents.sh
+
+    `brew uninstall` keeps the login agent; `brew uninstall --zap` removes it too.
   EOS
 end
