@@ -1,8 +1,8 @@
-# Homebrew cask template. scripts/bump-cask.sh fills in 0.2.1 and fe691c756d8a1eed4cd3deafb3a4237af6fb6846b617b54a0bbc66c030dd2eab and writes it
+# Homebrew cask template. scripts/bump-cask.sh fills in 0.3.0 and 623c302a7a2f98acf7a141af1b6e89fbe213484554f216f266cf23cc3cf2be3b and writes it
 # to zepocas/homebrew-tap as Casks/komorebi-menubar.rb.
 cask "komorebi-menubar" do
-  version "0.2.1"
-  sha256 "fe691c756d8a1eed4cd3deafb3a4237af6fb6846b617b54a0bbc66c030dd2eab"
+  version "0.3.0"
+  sha256 "623c302a7a2f98acf7a141af1b6e89fbe213484554f216f266cf23cc3cf2be3b"
 
   url "https://github.com/zepocas/komorebi-menubar/releases/download/v#{version}/KomorebiMenubar-#{version}.zip"
   name "Komorebi Menubar"
@@ -31,18 +31,20 @@ cask "komorebi-menubar" do
   # Upgrades run this too, so it must not remove the login agent; `zap` does that.
   uninstall quit: "io.github.zepocas.komorebi-menubar"
 
+  # komorebi's and skhd's agents are only trashed, not unloaded, so they keep running this session.
   zap launchctl: "io.github.zepocas.komorebi-menubar",
       trash:     [
         "~/Library/Application Support/komorebi/komorebi-menubar.sock",
+        "~/Library/LaunchAgents/io.github.zepocas.komorebi-menubar.plist",
+        "~/Library/LaunchAgents/io.github.zepocas.komorebi.plist",
+        "~/Library/LaunchAgents/io.github.zepocas.skhd.plist",
         "~/Library/Logs/komorebi-menubar.log",
       ]
 
   caveats <<~EOS
-    To start komorebi, skhd and Komorebi Menubar at login (needed for Restart in the menu),
-    install the LaunchAgents from a clone of the repo:
-      git clone https://github.com/zepocas/komorebi-menubar
-      komorebi-menubar/scripts/install-agents.sh
+    To start Komorebi Menubar, komorebi or skhd at login, tick them under
+    "Start at Login" in the app's menu.
 
-    `brew uninstall` keeps the login agent; `brew uninstall --zap` removes it too.
+    `brew uninstall` keeps those agents; `brew uninstall --zap` removes them too.
   EOS
 end
