@@ -1,6 +1,6 @@
 cask "kanata-menubar" do
-  version "0.1.0"
-  sha256 "77ca55b166badeba67720ef4ba8899c6cb12eb8dbb5b435657ea22c2ec43b3e8"
+  version "0.2.0"
+  sha256 "3676a6cc006d51db72ee5f0c7d17dcabe05973dfc6c67a75551154832eda3367"
 
   url "https://github.com/zepocas/kanata-menubar/releases/download/v#{version}/KanataMenubar.app.zip"
   name "Kanata Menubar"
@@ -31,8 +31,6 @@ cask "kanata-menubar" do
   ]
 
   caveats <<~EOS
-    To start Kanata Menubar at login, install the LaunchAgent from a clone of the repo:
-      git clone https://github.com/zepocas/kanata-menubar
-      kanata-menubar/scripts/install-agents.sh
+    To start Kanata Menubar at login, open it and pick "Start at Login" from its menu.
   EOS
 end
