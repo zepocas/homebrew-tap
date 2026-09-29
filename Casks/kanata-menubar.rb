@@ -1,6 +1,6 @@
 cask "kanata-menubar" do
-  version "0.2.3"
-  sha256 "7231aa92022063e376bfa72ee4366a83f5121a89000e4ec209e86dadc921f9a4"
+  version "0.3.0"
+  sha256 "e8d989dbdef316272e6329cd0a8bf85fdb85bfedec2dad3a6d77d2730fdfdf84"
 
   url "https://github.com/zepocas/kanata-menubar/releases/download/v#{version}/KanataMenubar.app.zip"
   name "Kanata Menubar"
