@@ -1,8 +1,8 @@
-# Homebrew cask template. scripts/bump-cask.sh fills in 0.3.0 and 623c302a7a2f98acf7a141af1b6e89fbe213484554f216f266cf23cc3cf2be3b and writes it
+# Homebrew cask template. scripts/bump-cask.sh fills in 0.3.1 and ec72b80de1952d5d512e9c631d1724fb112cd914ea365176dcce89ed4f887e28 and writes it
 # to zepocas/homebrew-tap as Casks/komorebi-menubar.rb.
 cask "komorebi-menubar" do
-  version "0.3.0"
-  sha256 "623c302a7a2f98acf7a141af1b6e89fbe213484554f216f266cf23cc3cf2be3b"
+  version "0.3.1"
+  sha256 "ec72b80de1952d5d512e9c631d1724fb112cd914ea365176dcce89ed4f887e28"
 
   url "https://github.com/zepocas/komorebi-menubar/releases/download/v#{version}/KomorebiMenubar-#{version}.zip"
   name "Komorebi Menubar"
